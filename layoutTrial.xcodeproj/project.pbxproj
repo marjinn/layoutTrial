@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		150F2FA31B70114D00633A7A /* AutolayoutPG.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 150F2FA21B70114D00633A7A /* AutolayoutPG.pdf */; };
 		286EDA261B6F74ED007F2659 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 286EDA251B6F74ED007F2659 /* main.m */; };
 		286EDA291B6F74ED007F2659 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 286EDA281B6F74ED007F2659 /* AppDelegate.m */; };
 		286EDA2C1B6F74ED007F2659 /* layoutTrial.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 286EDA2A1B6F74ED007F2659 /* layoutTrial.xcdatamodeld */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		150F2FA21B70114D00633A7A /* AutolayoutPG.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AutolayoutPG.pdf; sourceTree = "<group>"; };
 		286EDA201B6F74ED007F2659 /* layoutTrial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = layoutTrial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		286EDA241B6F74ED007F2659 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		286EDA251B6F74ED007F2659 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 		286EDA221B6F74ED007F2659 /* layoutTrial */ = {
 			isa = PBXGroup;
 			children = (
+				150F2FA21B70114D00633A7A /* AutolayoutPG.pdf */,
 				286EDA271B6F74ED007F2659 /* AppDelegate.h */,
 				286EDA281B6F74ED007F2659 /* AppDelegate.m */,
 				286EDA2D1B6F74ED007F2659 /* ViewController.h */,
@@ -204,6 +207,7 @@
 			files = (
 				286EDA321B6F74ED007F2659 /* Main.storyboard in Resources */,
 				286EDA371B6F74ED007F2659 /* LaunchScreen.xib in Resources */,
+				150F2FA31B70114D00633A7A /* AutolayoutPG.pdf in Resources */,
 				286EDA341B6F74ED007F2659 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +426,7 @@
 				286EDA481B6F74ED007F2659 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		286EDA491B6F74ED007F2659 /* Build configuration list for PBXNativeTarget "layoutTrialTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +435,7 @@
 				286EDA4B1B6F74ED007F2659 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
