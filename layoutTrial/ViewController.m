@@ -23,7 +23,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.button = createButton(@"This is for ages to come!! ", self,nil);
+    //self.button = createButton(@"This is for ages to come!! ", self,nil);
+    
+    
+    [self createButtonVFLWithText:@"This is for ages to come!! "
+                returnConstraints:nil];
     self.tapHerelabel = createLabel(@"Tap Here: ", self);
     self.switchContainer = createContainerView(self);
     self.orangeSwitch = createSwitch(self);
@@ -34,6 +38,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark "Manual Constraint"
 UILabel* createLabel (NSString* labelText,ViewController* self)
 {
     UILabel* tmpLabel = nil;
@@ -275,5 +280,43 @@ UIView* createContainerView (ViewController* self)
     
 }
 
-
-@end
+#pragma mark "Manual Constraint - VFL"
+-(UIButton*) createButtonVFLWithText: (NSString*) buttonText
+returnConstraints: (NSArray**) arrayOfConstraints
+{
+    UIButton* tmpButton = nil;
+    tmpButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [tmpButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpButton setTitle:buttonText forState:UIControlStateNormal];
+    [tmpButton setBackgroundColor:[UIColor orangeColor]];
+    
+    [self.view addSubview:tmpButton];
+    self.button = tmpButton;
+    
+    
+    NSArray* constrainsArray =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=300,<=1000)-[_button]-(==25)-|"
+                                            options:NSLayoutFormatAlignAllCenterY
+                                            metrics:nil
+                                              views:NSDictionaryOfVariableBindings(_button)];
+    
+    //button centered to X -- horzontal Center
+    NSLayoutConstraint* xPos = nil;
+    xPos = [NSLayoutConstraint constraintWithItem:tmpButton
+                                        attribute:NSLayoutAttributeCenterX
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:self.view
+                                        attribute:NSLayoutAttributeCenterX
+                                       multiplier:1.0f
+                                         constant:0.0f];
+    
+    NSMutableArray* constArray = [NSMutableArray array];
+    [constArray addObjectsFromArray:constrainsArray];
+    [constArray addObject:xPos];
+    
+    [[self view] addConstraints:[constArray copy]];
+    
+    
+    return  tmpButton;
+}
+    @end
