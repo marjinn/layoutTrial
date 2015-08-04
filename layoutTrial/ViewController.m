@@ -29,12 +29,18 @@
     [self createButtonVFLWithText:@"This is for ages to come!! "
                 returnConstraints:nil];
     self.tapHerelabel = createLabel(@"Tap Here: ", self);
-    self.switchContainer = createContainerView(self);
+    
+    
+    //self.switchContainer = createContainerView(self);
+    [self createContainerViewVFL];
+    
     //self.orangeSwitch = createSwitch(self);
     
     [self createSwitchVFL];
     
-    [self createAcceptAndCancelButtons];
+    //[self createAcceptAndCancelButtons];
+    
+    [self createAcceptAndCancelButtonsManual];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -575,7 +581,7 @@ returnConstraints: (NSArray**) arrayOfConstraints
     
     NSArray* constraints =
     [NSLayoutConstraint constraintsWithVisualFormat:
-  @"H:|[tmpCancelButton]-[tmpAcceptButton(==tmpCancelButton)]|"
+  @"H:|[tmpAcceptButton]-[tmpCancelButton(==tmpAcceptButton)]|"
                                             options:NSLayoutFormatAlignAllBaseline
                                             metrics:nil
                                               views:viewsDict];
@@ -585,6 +591,10 @@ returnConstraints: (NSArray**) arrayOfConstraints
     constraints = nil;
     
     //Threre is no need to specify the connection between superviews bottom and cancleButton
+    /*
+     if the relatioonship with top and sides define the position of the view ,
+     there is no need to specify the bottom poisition
+     */
     
     constraints =
     [NSLayoutConstraint constraintsWithVisualFormat:
@@ -597,6 +607,119 @@ returnConstraints: (NSArray**) arrayOfConstraints
     
     
     
+}
+
+
+-(void)createAcceptAndCancelButtonsManual
+{
+    UIButton* tmpAcceptButton = nil;
+    tmpAcceptButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [tmpAcceptButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpAcceptButton setTitle:@"Accept" forState:UIControlStateNormal];
+    [tmpAcceptButton setBackgroundColor:[UIColor yellowColor]];
+    
+    [[self switchContainer] addSubview:tmpAcceptButton];
+    
+    UIButton* tmpCancelButton = nil;
+    tmpCancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [tmpCancelButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [tmpCancelButton setBackgroundColor:[UIColor orangeColor]];
+    
+    [[self switchContainer] addSubview:tmpCancelButton];
+    
+    //horizontal
+    NSLayoutConstraint* superViewToleadingtmpAcceptButton = nil;
+    superViewToleadingtmpAcceptButton =
+    [NSLayoutConstraint constraintWithItem:tmpAcceptButton
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.switchContainer
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    [[self switchContainer] addConstraint:superViewToleadingtmpAcceptButton];
+    
+    
+   // button.left = (container.left + 20)
+    /*
+     a -ve value is required as 
+     
+     tmpAcceptButton.right = tmpCancelButton.left + 20 would increase width of tmpAcceptButton
+     
+     as tmpAcceptButton.right == tmpCancelButton.left -- both refer to same position in space
+     
+     the direction in which tmpCancelButton.left can expand is towrads left ie the negetive direction
+     
+     so 
+     tmpAcceptButton.right = tmpCancelButton.left - 20
+     
+     */
+    NSLayoutConstraint* interItemSpacing = nil;
+    interItemSpacing =
+    [NSLayoutConstraint constraintWithItem:tmpAcceptButton
+                                 attribute:NSLayoutAttributeRight
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:tmpCancelButton
+                                 attribute:NSLayoutAttributeLeft
+                                multiplier:1.0f
+                                  constant:-20.0f];
+    
+    
+    NSLayoutConstraint* equalWidth = nil;
+    equalWidth =
+    [NSLayoutConstraint constraintWithItem:tmpAcceptButton
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:tmpCancelButton
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    NSLayoutConstraint* superViewToTrailingtmpCancelButton = nil;
+    superViewToTrailingtmpCancelButton =
+    [NSLayoutConstraint constraintWithItem:tmpCancelButton
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.switchContainer
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    
+    NSLayoutConstraint* topMargintmpCancelButton = nil;
+    topMargintmpCancelButton =
+    [NSLayoutConstraint constraintWithItem:tmpCancelButton
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.switchContainer
+                                 attribute:NSLayoutAttributeTop
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    NSLayoutConstraint* topMargintmpAcceptButton = nil;
+    topMargintmpAcceptButton =
+    [NSLayoutConstraint constraintWithItem:tmpAcceptButton
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.switchContainer
+                                 attribute:NSLayoutAttributeTop
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    
+    [[self switchContainer] addConstraints:
+  @[superViewToleadingtmpAcceptButton,
+    interItemSpacing,
+    equalWidth,
+    superViewToTrailingtmpCancelButton,
+    topMargintmpAcceptButton,
+    topMargintmpCancelButton
+    
+    
+    ]];
+
 }
 
     @end
