@@ -30,7 +30,11 @@
                 returnConstraints:nil];
     self.tapHerelabel = createLabel(@"Tap Here: ", self);
     self.switchContainer = createContainerView(self);
-    self.orangeSwitch = createSwitch(self);
+    //self.orangeSwitch = createSwitch(self);
+    
+    [self createSwitchVFL];
+    
+    [self createAcceptAndCancelButtons];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -295,8 +299,8 @@ returnConstraints: (NSArray**) arrayOfConstraints
     
     
     NSArray* constrainsArray =
-    [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=300,<=1000)-[_button]-(==25)-|"
-                                            options:NSLayoutFormatAlignAllCenterY
+    [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=300,<=1000)-[_button]-(==20)-|"
+                                            options:0
                                             metrics:nil
                                               views:NSDictionaryOfVariableBindings(_button)];
     
@@ -319,4 +323,280 @@ returnConstraints: (NSArray**) arrayOfConstraints
     
     return  tmpButton;
 }
+
+-(void)buttonPressHandler:(id)action
+{
+    NSLog(@"%@",NSStringFromCGRect(
+                                   [[UIScreen mainScreen] bounds]));
+    NSLog(@"%@",NSStringFromCGRect(
+                                   [self.view bounds]));
+    NSLog(@"%@",NSStringFromCGRect(
+                                   [self.view frame]));
+}
+
+-(UILabel*) createLabelVFLWithText: (NSString*) buttonText
+{
+    UILabel* tmpLabel = nil;
+    tmpLabel = [UILabel new];
+    [tmpLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpLabel setText:buttonText];
+    [tmpLabel setBackgroundColor:[UIColor yellowColor]];
+    self.tapHerelabel = tmpLabel;
+    
+    [self.view addSubview:tmpLabel];
+    
+    
+    NSArray* constrainsArrayX =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=20)-[_tapHerelabel]-[_button]|"
+                                            options:NSLayoutFormatAlignAllBaseline
+                                            metrics:nil
+                                              views:NSDictionaryOfVariableBindings(_button,
+                                                                                   _tapHerelabel)];
+    
+    NSLayoutConstraint* xPosRelativeToButton = nil;
+    xPosRelativeToButton =
+    [NSLayoutConstraint constraintWithItem:tmpLabel
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.button
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    NSLayoutConstraint* xPosRelativeToSuperView = nil;
+    xPosRelativeToSuperView =
+    [NSLayoutConstraint constraintWithItem:tmpLabel
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                    toItem:self.view
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0f
+                                  constant:20.0f];
+    
+    NSArray* constrainsArrayY =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=300,<=1000)-[_tapHerelabel]-(==30)-|"
+                                            options:NSLayoutFormatAlignAllBaseline
+                                            metrics:nil
+                                              views:NSDictionaryOfVariableBindings(_tapHerelabel)];
+    
+    
+    NSLayoutConstraint* yPos = nil;
+    yPos = [NSLayoutConstraint constraintWithItem:tmpLabel
+                                        attribute:NSLayoutAttributeBottom
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:self.view
+                                        attribute:NSLayoutAttributeBottom
+                                       multiplier:1.0f
+                                         constant:-25.0f];
+    
+    NSMutableArray* constArray =
+    [NSMutableArray arrayWithCapacity:(constrainsArrayX.count + constrainsArrayY.count)];
+    
+    //[constArray addObjectsFromArray:constrainsArrayX];
+    [constArray addObjectsFromArray:constrainsArrayY];
+    //[constArray addObjectsFromArray:@[xPosRelativeToSuperView,xPosRelativeToButton,yPos]];
+    [constArray addObjectsFromArray:@[xPosRelativeToSuperView,xPosRelativeToButton]];
+    
+    [[self view] addConstraints:[constArray copy]];
+    
+    return tmpLabel;
+}
+
+-(UIView*) createContainerViewVFL
+{
+    //has no intrinsic content size
+    UIView* tmpView = nil;
+    tmpView = [UIView new];
+    [tmpView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpView setBackgroundColor:[UIColor redColor]];
+    
+    [[self view] addSubview:tmpView];
+    self.switchContainer = tmpView;
+    
+    NSArray* constrainsArrayX =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[_switchContainer]-|"
+                                            options:NSLayoutFormatAlignAllBaseline
+                                            metrics:nil
+                                              views:NSDictionaryOfVariableBindings(_switchContainer)];
+    
+    NSArray* constrainsArrayY =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(==64)-[switchContainer(>=200)]-(==84)-|"
+                                            options:NSLayoutFormatAlignAllBaseline
+                                            metrics:nil
+                                              views:@{@"switchContainer" : self.switchContainer}];
+    
+    NSMutableArray* constArray =
+    [NSMutableArray arrayWithCapacity:(constrainsArrayX.count + constrainsArrayY.count)];
+    
+    
+    [constArray addObjectsFromArray:constrainsArrayX];
+    [constArray addObjectsFromArray:constrainsArrayY];
+    
+    [[self view] addConstraints:[constArray copy]];
+    
+    return tmpView;
+}
+
+-(UISwitch*) createSwitchVFL
+{
+    UISwitch* tmpSwitch = nil;
+    tmpSwitch = [UISwitch new];
+    [tmpSwitch setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [[UISwitch appearanceWhenContainedIn:[self.switchContainer class], nil] setOnTintColor:[UIColor orangeColor]] ;
+    
+    [[self switchContainer] addSubview:tmpSwitch];
+    self.orangeSwitch = tmpSwitch;
+    
+    
+    NSLayoutConstraint* xPos = nil;
+    xPos =
+    [NSLayoutConstraint constraintWithItem:self.orangeSwitch
+                                 attribute:NSLayoutAttributeCenterX
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.switchContainer
+                                 attribute:NSLayoutAttributeCenterX
+                                multiplier:1.0f
+                                  constant:0.0f];
+    
+    
+    NSArray* constraintsForVpos = nil;
+    constraintsForVpos =
+//    [NSLayoutConstraint constraintsWithVisualFormat:
+//     @"V:|-(>=min_distance_from_toplayout,<=max_distance_from_toplayout)-[orangeSwitch]-(==bottomPadding)-|"
+//                                            options:NSLayoutFormatAlignAllBaseline
+//                                            metrics:@{@"bottomPadding" :
+//                                                          @(10),
+//                                                      @"min_distance_from_toplayout" :
+//                                                          @(0),
+//                                                      @"max_distance_from_toplayout" :
+//                                                          @(self.view.bounds.size.height)
+//                                                      }
+//                                              views:@{@"orangeSwitch" : self.orangeSwitch}];
+    
+    [NSLayoutConstraint constraintsWithVisualFormat:
+     @"V:[orangeSwitch]-(==bottomPadding)-|"
+                                            options:NSLayoutFormatAlignAllBaseline
+                                            metrics:@{@"bottomPadding" :
+                                                          @(10),
+                                                      @"min_distance_from_toplayout" :
+                                                          @(0),
+                                                      @"max_distance_from_toplayout" :
+                                                          @(self.view.bounds.size.height)
+                                                      }
+                                              views:@{@"orangeSwitch" : self.orangeSwitch}];
+    
+    
+    NSMutableArray* constArray =
+    [NSMutableArray arrayWithCapacity:(constraintsForVpos.count + 1)];
+    
+    
+    [constArray addObjectsFromArray:constraintsForVpos];
+    [constArray addObjectsFromArray:@[xPos]];
+    
+    [[self view] addConstraints:[constArray copy]];
+    
+    
+    
+    return tmpSwitch;
+}
+
+//-(void)updateViewConstraints
+//{
+//    [super updateViewConstraints];
+//}
+
+/*
+ layoutIfNeeded - force layout
+ 
+ updateConstraints -> layout -> display
+ 
+ apply layout phase
+ -[layoutsubviews gets called -- UIKIT
+ --- here is where the auto layout functions are applied
+ 
+ after this
+ 
+ setBounds and setCenter to UIview
+ setFrame to NSView
+ 
+ V:[redBox][yellowBox(==redBox)]//equal heigh
+ 
+ //DEBUG
+ 
+ [UIWindow keyWindow] _autolayoutTrace]
+ 
+ UIWindow:0x79e70ed0
+ |   •UIView:0x79e72860
+ |   |   *_UILayoutGuide:0x79e729f0
+ |   |   *_UILayoutGuide:0x79e72e00
+ |   |   *UIButton:0x79e72460'This is for ages to come!...'
+ |   |   |   UIButtonLabel:0x7a085430'This is for ages to come!...'
+ |   |   *UILabel:0x79e79610'Tap Here: '
+ |   |   *UIView:0x7a082640
+ |   |   |   *UISwitch:0x7a082eb0
+ |   |   |   |   _UISwitchInternalViewNeueStyle1:0x7a0835d0
+ |   |   |   |   |   UIView:0x7a47e250
+ |   |   |   |   |   |   UIView:0x7a47d5e0
+ |   |   |   |   |   UIView:0x7a47e190
+ |   |   |   |   |   |   UIView:0x7a47d670
+ |   |   |   |   |   UIView:0x7a47d010
+ |   |   |   |   |   |   UIImageView:0x7a47e540
+ |   |   |   |   |   |   UIImageView:0x7a47e620
+ |   |   |   |   |   UIImageView:0x7a084600
+ 
+ 
+ 
+ SHOWS AN AMBIGOUSLAYOUT
+ 
+ */
+
+
+-(void)createAcceptAndCancelButtons
+{
+    UIButton* tmpAcceptButton = nil;
+    tmpAcceptButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [tmpAcceptButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpAcceptButton setTitle:@"Accept" forState:UIControlStateNormal];
+    [tmpAcceptButton setBackgroundColor:[UIColor yellowColor]];
+    
+    [[self switchContainer] addSubview:tmpAcceptButton];
+    
+    UIButton* tmpCancelButton = nil;
+    tmpCancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [tmpCancelButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [tmpCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [tmpCancelButton setBackgroundColor:[UIColor orangeColor]];
+    
+    [[self switchContainer] addSubview:tmpCancelButton];
+    
+    
+    NSDictionary* viewsDict = NSDictionaryOfVariableBindings(tmpAcceptButton,tmpCancelButton);
+    
+    NSArray* constraints =
+    [NSLayoutConstraint constraintsWithVisualFormat:
+  @"H:|[tmpCancelButton]-[tmpAcceptButton(==tmpCancelButton)]|"
+                                            options:NSLayoutFormatAlignAllBaseline
+                                            metrics:nil
+                                              views:viewsDict];
+    
+    [[self switchContainer] addConstraints:constraints];
+    
+    constraints = nil;
+    
+    //Threre is no need to specify the connection between superviews bottom and cancleButton
+    
+    constraints =
+    [NSLayoutConstraint constraintsWithVisualFormat:
+     @"V:|[tmpCancelButton]"
+                                            options:0
+                                            metrics:nil
+                                              views:viewsDict];
+    
+     [[self switchContainer] addConstraints:constraints];
+    
+    
+    
+}
+
     @end
